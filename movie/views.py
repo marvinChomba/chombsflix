@@ -6,9 +6,23 @@ from decouple import config
 
 def home(request):
     response = requests.get(config("MOVIE_API"))
-    movies = response.json()
+    movies_res = response.json()
+    movies = movies_res["results"]
+    movies_list = []
+    for movie in movies:
+        id = movie['id']
+        key = get_trailer(id)
+        movie_dets = {
+            "title":movie['title'],
+            "overview":movie['overview'],
+            "vote_average":movie['vote_average'],
+            "poster_path": movie['poster_path'],
+            "key":key
+        }
+        movies_list.append(movie_dets)
+    print(movies_list)
     context = {
-        "movies":movies["results"]
+        "movies":movies_list
     }
     return render(request,"movies.html",context)
 
@@ -22,3 +36,21 @@ def search_movie(request):
             "movies":movies["results"]
         }
         return render(request, "search.html", context)
+
+def get_trailer(id):
+    url = config("TRAILER_URL").format(id)
+    response = requests.get(url)
+    movie = response.json()
+    movies = movie["results"]
+    keys = []
+    for m in movies:
+        if m['key']:
+            keys.append(m['key'])
+
+    if len(keys) > 0:
+        return keys[0]
+    else:
+        return None
+
+def video(request,id):
+    return render(request,"video.html", {"id":id})
