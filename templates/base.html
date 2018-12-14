@@ -2,7 +2,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +19,7 @@
         {% for movie in movies %}
         <div class="">
             <h3>{{movie.title}}</h3>
-            <img src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" onclick='showModal("{{movie.title}}","{{movie.overview}}","{{movie.vote_average}}","{{movie.poster_path}}","{{movie.key}}")' alt="">
+            <img style="transform: scale(0.6)"src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}" onclick='showModal("{{movie.title}}","{{movie.overview}}","{{movie.vote_average}}","{{movie.poster_path}}","{{movie.key}}")' alt="">
         </div>
         {% endfor %}
     </div>

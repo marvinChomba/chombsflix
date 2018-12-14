@@ -32,8 +32,20 @@ def search_movie(request):
         search_api = config("SEARCH_API").format(movie_term)
         response = requests.get(search_api)
         movies = response.json()
+        movies_list = []
+        for movie in movies:
+            id = movie['id']
+            key = get_trailer(id)
+            movie_dets = {
+                "title":movie['title'],
+                "overview":movie['overview'],
+                "vote_average":movie['vote_average'],
+                "poster_path": movie['poster_path'],
+                "key":key
+            }
+            movies_list.append(movie_dets)
         context = {
-            "movies":movies["results"]
+            "movies":movies_list
         }
         return render(request, "search.html", context)
 
